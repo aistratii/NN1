@@ -34,10 +34,22 @@ public class NeuralNet {
             netLayers.add(new ArrayList<Node>());
 
         initOutputLayer();
-        initHiddenLayer(middleLayerSize);
+        initGenericHiddenLayer(middleLayerSize);
+        initGenericConnections();
     };
 
-    private void initHiddenLayer(int middleLayerSize) {
+    private void initGenericConnections() {
+        for(int i = 0; i < netLayers.size() -1; i++)
+            for (int j = 0; j < netLayers.get(i).size(); j++)
+                for (int l = 0; l < netLayers.get(i+1).size(); l++) {
+                    netLayers.get(i).get(j).connectedNodes.add(
+                            netLayers.get(i + 1).get(l)
+                    );
+                    netLayers.get(i).get(j).connectedNodesWeights.add(0.01f);
+                }
+    };
+
+    private void initGenericHiddenLayer(int middleLayerSize) {
         for (int i = 1; i <= netLayers.size()-2; i++) {
             for (int j = 0; j < middleLayerSize; j++)
                 netLayers.get(i).add(new Node(0.01f));
@@ -49,5 +61,13 @@ public class NeuralNet {
         netLayers.add(new ArrayList<Node>());
         for (float f : outputLayerTmp)
             netLayers.get(netLayers.size()-1).add(new Node(f));
+    };
+
+
+    public float getError(){
+        float result = 0f;
+
+        for (int i = 0; i < netLayers.size(); i++)
+            return result;
     };
 };

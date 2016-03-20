@@ -39,4 +39,15 @@ public class Node {
     private float activationFunction(float result){
         return (float) (1.0f/(1.0f*Math.exp(-result)));
     };
+
+
+    public float getActivationFunctionValue(){
+        float result = 0f;
+
+        for (int i = 0; i < connectedNodes.size(); i++){
+
+        }
+
+        return result;
+    };
 };
