@@ -11,14 +11,18 @@ import NeuralNet.*;
  */
 public class NeuralNetworkGraphicRepresentation extends JFrame {
     private NeuralNet net;
-    public static int inBetweenLayerDistance = 100;
-    private int circleSize = 20;
     private ArrayList<NodeGraphicInformationContainer> nodeGraphicInformationContainers;
+    private int borderDistance = 100;
+    private int circleDiameter = 20;
+    int drawAreaWidth;
+    int drawAreaHeight;
+    int horrizontalDistanceBetweenNodes;
 
     public NeuralNetworkGraphicRepresentation(NeuralNet net){
         super();
         setSize(500,500);
         this.net = net;
+        nodeGraphicInformationContainers = new ArrayList<>();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         repaint();
@@ -29,64 +33,21 @@ public class NeuralNetworkGraphicRepresentation extends JFrame {
     @Override
     public void paint(Graphics g){
         g.clearRect(0, 0, getWidth(), getHeight());
-        int offsetX = 100;
-        int offsetY = 22 + circleSize;
         nodeGraphicInformationContainers = new ArrayList<>();
+        drawAreaWidth = getWidth() - borderDistance*2;
+        drawAreaHeight = getHeight() - borderDistance*2;
+        horrizontalDistanceBetweenNodes = (drawAreaWidth - circleDiameter*net.netLayers.size())/net.netLayers.size();
 
-        //drwa inputLayer nodes
-        for (int i = 0; i < net.inputLayer.size(); i++) {
-            int deltaDistance = ((getHeight()-offsetY) / net.inputLayer.size());
-            //deltaDistance = deltaDistance + deltaDistance/net.inputLayer.size();
-
-            String value = new Float(net.inputLayer.get(i).getValue()).toString();
-            int x = offsetX;
-            int y = i*deltaDistance +offsetY;
-            g.drawString(value,
-                    x +2,
-                    y + circleSize - g.getFont().getSize()/2);
-            g.drawOval(x, y, circleSize, circleSize);
-            nodeGraphicInformationContainers.add(new NodeGraphicInformationContainer( net.inputLayer.get(i), x, y));
-        }
-
-        //draw middleLayerNodes
-        offsetX += inBetweenLayerDistance;
-        for (int i = 0; i < net.middleLayer.size(); i++) {
-            for (int j = 0; j < net.middleLayer.get(i).size(); j++) {
-                int deltaDistance = ((getHeight() - offsetY) / net.middleLayer.get(i).size());
-                String value = new Float(net.middleLayer.get(i).get(j).getValue()).toString();
-                int x = offsetX;
-                int y = j * deltaDistance + offsetY;
-
-                g.drawString(value,
-                        x + 2,
-                        y + circleSize - g.getFont().getSize() / 2);;
-                g.drawOval(x, y, circleSize, circleSize);
-
-                nodeGraphicInformationContainers.add(new NodeGraphicInformationContainer( net.middleLayer.get(i).get(j), x, y));
+        int offsetX = borderDistance;
+        for (int i = 0; i < net.netLayers.size(); i++) {
+            int verticalDistanceBetweenNodes = (drawAreaHeight - circleDiameter*net.netLayers.get(i).size())/net.netLayers.get(i).size();
+            for (int j = 0; j < net.netLayers.get(i).size(); j++) {
+                int offsetY = borderDistance + j * (verticalDistanceBetweenNodes + circleDiameter);
+                g.drawOval(offsetX, offsetY, circleDiameter, circleDiameter);
             }
-            offsetX += inBetweenLayerDistance;
-        }
-
-        //draw outputLayer nodes
-        for (int i = 0; i < net.outputLayer.size(); i++) {
-            int deltaDistance = ((getHeight()-offsetY) / net.outputLayer.size());
-
-            String value = new Float(net.outputLayer.get(i).getValue()).toString();
-            int x = offsetX;
-            int y = i*deltaDistance +offsetY;
-            g.drawString(value,
-                    x +2,
-                    i*deltaDistance + offsetY + circleSize - g.getFont().getSize()/2);
-            g.drawOval(x, y, circleSize, circleSize);
-            nodeGraphicInformationContainers.add(new NodeGraphicInformationContainer( net.outputLayer.get(i), x, y));
+            offsetX += horrizontalDistanceBetweenNodes + circleDiameter;
+            System.out.println("Layer " + i + " nodes: " + net.netLayers.get(i).size());
         };
-
-        //draw connections
-        for (NodeGraphicInformationContainer sourceNode : nodeGraphicInformationContainers)
-            for ( Node targetNode : sourceNode.node.connectedNodes )
-                g.drawLine(sourceNode.x, sourceNode.y, sourceNode.);
-
-
     };
 
 
