@@ -41,12 +41,18 @@ public class Node {
     };
 
 
-    public float getActivationFunctionValue(){
+    public float getResult(){
+        if (connectedNodes.size() == 0) return value;
         float result = 0f;
+        for (int i = 0; i < connectedNodes.size(); i++)
+            result += connectedNodes.get(i).getValue()*connectedNodesWeights.get(i);
 
-        for (int i = 0; i < connectedNodes.size(); i++){
+        result = -result;
+        result -= NeuralNet.bias;
+        result = 1f/(1f + (float)Math.exp(result));
 
-        }
+        //To delete this
+        //value = result;
 
         return result;
     };

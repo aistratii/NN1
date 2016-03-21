@@ -9,6 +9,7 @@ public class NeuralNet {
     public ArrayList<ArrayList<Node>> netLayers;
     public static int ID = 0;
     private float outputLayerTmp[];
+    public static float bias = 0.5f;
 
 
     public NeuralNet(){
@@ -63,11 +64,25 @@ public class NeuralNet {
             netLayers.get(netLayers.size()-1).add(new Node(f));
     };
 
-
     public float getError(){
         float result = 0f;
 
-        for (int i = 0; i < netLayers.size(); i++)
-            return result;
+        /*for (int i = 0; i < netLayers.size(); i++)
+            for (int j = 0; j < netLayers.get(i).size(); j++)
+                result +=  netLayers.get(i).get(j).getValue();*/
+        float lastLayerData[] = new float[netLayers.get(netLayers.size()-1).size()];
+
+        for (int i = 0; i < netLayers.get(netLayers.size()-1).size(); i++) {
+            float value = netLayers.get(netLayers.size() - 1).get(i).getValue();
+            float resultTmp = netLayers.get(netLayers.size() - 1).get(i).getResult();
+            lastLayerData[i] = 0.5f*(float)Math.pow((value - result), 2);
+            System.out.println("level " + i +", error: " + lastLayerData[i]);
+        }
+
+        for (float f : lastLayerData)
+            result += f;
+        result /= netLayers.get(netLayers.size()-1).size();
+
+        return result;
     };
 };
