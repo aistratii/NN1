@@ -46,13 +46,16 @@ public class NeuralNetworkGraphicRepresentation extends JFrame {
                 int offsetY = borderDistance + j * (verticalDistanceBetweenNodes + circleDiameter);
                 g.drawOval(offsetX, offsetY, circleDiameter, circleDiameter);
                 g.drawString(new Float(net.netLayers.get(i).get(j).getValue()).toString(), offsetX, offsetY);
+                g.setColor(Color.RED);
+                g.drawString(new Integer(net.netLayers.get(i).get(j).getID()).toString(), offsetX + 5, offsetY + 15);
+                g.setColor(Color.BLACK);
                 nodeGraphicInformationContainer.add(new NodeGraphicInformationContainer(net.netLayers.get(i).get(j), offsetX, offsetY));
             }
             offsetX += horrizontalDistanceBetweenNodes + circleDiameter;
         };
 
         //draw node connections
-        for (int i = 0; i < nodeGraphicInformationContainer.size() -1; i++){
+        for (int i = 0; i < nodeGraphicInformationContainer.size(); i++){
             NodeGraphicInformationContainer nodeContainer = nodeGraphicInformationContainer.get(i);
             //pentru fiecare dintre nodurile conectate
             for (int j = 0; j < nodeContainer.node.connectedNodes.size(); j++)

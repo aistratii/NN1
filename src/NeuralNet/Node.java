@@ -42,7 +42,7 @@ public class Node {
 
 
     public float getResult(){
-        if (connectedNodes.size() == 0) return value;
+        if (connectedNodes.isEmpty()) return value;
         float result = 0f;
         for (int i = 0; i < connectedNodes.size(); i++)
             result += connectedNodes.get(i).getValue()*connectedNodesWeights.get(i);
@@ -55,5 +55,9 @@ public class Node {
         //value = result;
 
         return result;
+    };
+
+    public int getID(){
+        return ID;
     };
 };
